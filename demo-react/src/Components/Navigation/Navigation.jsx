@@ -1,16 +1,18 @@
+import { Link } from "react-router-dom";
+
 function Navigation () {
     return(
         <>
-            <div className="mainmenu-area">
-                <div className="container">
+            <div className="mainmenu-area" style={{marginLeft:"18.3rem"}}>
+                
                     <div className="row">
                     <div className="navbar">
                         <ul className="nav navbar-nav navbar-expand">
                         <li className="active">
-                            <a href="index.html">Home</a>
+                            <Link to="/">Home</Link>
                         </li>
                         <li>
-                            <a href="shop.html">Samsung</a>
+                            <Link to="samsung">Samsung</Link>
                         </li>
                         <li>
                             <a href="shop.html">Apple</a>
@@ -27,7 +29,7 @@ function Navigation () {
                         </ul>
                     </div>
                     </div>
-                </div>
+                
             </div>
         </>
     );
