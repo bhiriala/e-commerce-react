@@ -26,7 +26,7 @@ function Layout() {
 
     return (
         <div>
-            <Header CartItemsNum={cartData?.items?.length || 0} total={cartData?.total || 0} />
+            <Header CartItemsNum={cartData?.items?.reduce((sum, item) => sum + item.qty, 0) || 0} total={cartData?.total || 0} />
             <Navigation />
             <main style={{ minHeight: "80vh", padding: "20px" }}>
                 <Outlet />

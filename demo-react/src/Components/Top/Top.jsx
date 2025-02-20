@@ -65,7 +65,7 @@ function Top(props) {
                                     ))}
                                 </div>
                                 <div className="product-wid-price">
-                                    <ins>${prod.price - (prod.price * prod.discountRate) / 100}</ins>
+                                    <ins>${prod.price * (1 - (prod.discountRate / 100))}</ins>
                                     <del>${prod.price}</del>
                                 </div>
                             </div>

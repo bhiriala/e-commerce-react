@@ -14,6 +14,7 @@ function ProductInList(props) {
             imageName: props.img,
             price: props.price,
             qty: 1,
+            discountRate:props.discount
         };
 
         dispatch(addToCart(newItem));
@@ -61,7 +62,7 @@ function ProductInList(props) {
 
                 </h2>
                 <div className="product-carousel-price">
-                    <ins>${props.price}</ins> <del>${props.discount}</del>
+                    <ins>${props.price * (1 - (props.discount / 100))}</ins> <del>${props.price}</del>
                 </div>
                 <div className="product-option-shop">
                     <button className="add_to_cart_button" onClick={handleAddToCart}>

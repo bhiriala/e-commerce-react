@@ -7,13 +7,13 @@ import img1 from "../assets/img/product-thumb-1.jpg";
 import img2 from "../assets/img/product-thumb-2.jpg";
 import img3 from "../assets/img/product-thumb-3.jpg";
 
-//bch nhez l button f component wahdou
 function ProductDetails() {
     const { id } = useParams();
     const [produit, setProduit] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [imageName, setImageName] = useState("");
+    const [quantity, setQuantity] = useState(1); 
 
     const dispatch = useDispatch();
     const { cartId, cartData } = useSelector((state) => state.cart);
@@ -24,7 +24,8 @@ function ProductDetails() {
             name: produit.name,
             imageName: imageName,
             price: produit.price,
-            qty: 1,
+            qty: quantity,
+            discountRate:produit.discountRate
         };
 
         dispatch(addToCart(newItem));
@@ -34,6 +35,7 @@ function ProductDetails() {
         const updateCart = async () => {
             if (cartId && cartData) {
                 try {
+                    console.log(cartData)
                     const response = await fetch(`http://localhost:3000/carts/${cartId}`, {
                         method: "PUT",
                         headers: {
@@ -66,6 +68,7 @@ function ProductDetails() {
                 }
 
                 const result = await response.json();
+                console.log(result);
                 setProduit(result);
 
                 if (result.imageName) {
@@ -139,7 +142,7 @@ function ProductDetails() {
                                     <div className="product-inner">
                                         <h2 className="product-name">{produit.name}</h2>
                                         <div className="product-inner-price">
-                                            <ins>${(produit.price - (produit.price * produit.discountRate) / 100).toFixed(2)}</ins>
+                                            <ins>${(produit.price * (1-(produit.discountRate/100))).toFixed(2)}</ins>
                                             <del>${produit.price}</del>
                                         </div>
                                         <form action="" className="cart" onSubmit={(e) => e.preventDefault()}>
@@ -149,10 +152,11 @@ function ProductDetails() {
                                                     size={4}
                                                     className="input-text qty text"
                                                     title="Qty"
-                                                    defaultValue={1}
+                                                    value={quantity}
                                                     name="quantity"
                                                     min={1}
                                                     step={1}
+                                                    onChange={(e) => setQuantity(Number(e.target.value))}
                                                 />
                                             </div>
                                             <button type="button" className="add_to_cart_button" onClick={handleAddToCart}>

@@ -31,12 +31,12 @@ const cartSlice = createSlice({
     reducers: {
         addToCart: (state, action) => {
             state.cartData.items.push(action.payload);
-            state.cartData.total += action.payload.price * action.payload.qty ;
-            state.cartData.subTotal  += action.payload.price * action.payload.qty ;
+            state.cartData.total += (action.payload.price * (1-(action.payload.discountRate/100)) ) * action.payload.qty ;
+            state.cartData.subTotal  += (action.payload.price * (1-(action.payload.discountRate/100)) ) * action.payload.qty ;
         },
         removeFromCart: (state, action) => {
             state.cartData.items = state.cartData.items.filter(item => item.id !== action.payload);
-            state.cartData.total -= action.payload.price * action.payload.qty ;
+            state.cartData.total -= (action.payload.price * (1-(action.payload.discountRate/100)) ) * action.payload.qty ;
             state.cartData.subTotal  -= action.payload.price * action.payload.qty ;
         },
     },

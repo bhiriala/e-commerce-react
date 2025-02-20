@@ -1,4 +1,5 @@
 import './Footer.css';
+import { Link } from "react-router-dom";
 function Footer() {
   return (
       <div className="footer-top-area">
@@ -20,11 +21,21 @@ function Footer() {
                   <div className="footer-menu" style={{textAlign:"center"}}>
                       <h2 className="footer-wid-title">Categories</h2>
                       <ul>
-                          <li><a href="#">LG</a></li>
-                          <li><a href="#">Samsung</a></li>
-                          <li><a href="#">Sony</a></li>
-                          <li><a href="#">Apple</a></li>
-                          <li><a href="#">Huawei</a></li>
+                      <li>
+                            <Link to="/products/20">Samsung</Link>
+                        </li>
+                        <li>
+                            <Link to="/products/10">Apple</Link>
+                        </li>
+                        <li>
+                            <Link to="/products/30">LG</Link>
+                        </li>
+                        <li>
+                             <Link to="/products/50">Sony</Link>
+                        </li>
+                        <li>
+                            <Link to="/products/40">Huawei</Link>
+                        </li>
                       </ul>
                   </div>
               </div>
