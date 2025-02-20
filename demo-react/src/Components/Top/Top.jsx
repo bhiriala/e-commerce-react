@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 function Top(props) {
+    const location = useLocation();
     const [listProd, setListProd] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -33,15 +35,15 @@ function Top(props) {
     
 
     return (
-        <div className="col-md-4">
+        <div className={location.pathname.includes("productDetails") ? "" : "col-md-4"}>
             {error ? (
                 <p style={{ color: "red" }}>{error}</p>
             ) : loading ? (
                 <p>Chargement en cours...</p>
             ) : (
                 <div className="single-product-widget">
-                    <h2 className="product-wid-title">{props.name}</h2>
-                    <button className="wid-view-more" onClick={handleViewAll}>View All</button>
+                    <h2 className={location.pathname.includes("productDetails") ? "sidebar-title" : "product-wid-title"}>{props.name}</h2>
+                    {location.pathname.includes("productDetails") ? <></>: <button className="wid-view-more" onClick={handleViewAll}>View All</button>}
 
                     {displayedProducts.map((prod, index) => {
                         const i = prod.imageName.indexOf("-");
@@ -54,7 +56,8 @@ function Top(props) {
                                     <img src={imgName} alt={prod.name} className="product-thumb" />
                                 </a>
                                 <h2>
-                                    <a href="single-product.html">{prod.name}</a>
+                                    <Link to={`/productDetails/${prod.id}`}>{prod.name}</Link>
+                                  
                                 </h2>
                                 <div className="product-wid-rating">
                                     {Array.from({ length: prod.review }).map((_, i) => (
