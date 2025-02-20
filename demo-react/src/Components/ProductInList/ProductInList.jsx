@@ -31,3 +31,4 @@ function ProductInList (props) {
         </>
     )
 }
+export default ProductInList;

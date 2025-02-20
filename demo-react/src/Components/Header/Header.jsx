@@ -4,7 +4,7 @@ import logo from "../../assets/img/logo.png";
 function Header() {
     return (
         <>
-            <div className="site-branding-area" style={{ backgroundColor: "#f8f9fa",paddingRight:"3.5rem",width:"80%",marginLeft:"12rem" }}>
+            <div className="site-branding-area" style={{ backgroundColor: "#f8f9fa",paddingRight:"3.5rem",width:"80%",marginLeft:"11rem" }}>
                 
                     <div className="row">
                         <div className="col-sm-3">

@@ -7,7 +7,6 @@ import Promo from '../Components/Promo/Promo'
 function Home () {
     return(
         <>
-        <Navigation/>
         <Carousel/>
         <Promo/>
         <Brands/>

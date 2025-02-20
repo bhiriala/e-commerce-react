@@ -12,19 +12,19 @@ function Navigation () {
                             <Link to="/">Home</Link>
                         </li>
                         <li>
-                            <Link to="samsung">Samsung</Link>
+                            <Link to="/products/20">Samsung</Link>
                         </li>
                         <li>
-                            <a href="shop.html">Apple</a>
+                            <Link to="/products/10">Apple</Link>
                         </li>
                         <li>
-                            <a href="shop.html">LG</a>
+                            <Link to="/products/30">LG</Link>
                         </li>
                         <li>
-                            <a href="shop.html">Sony</a>
+                             <Link to="/products/50">Sony</Link>
                         </li>
                         <li>
-                            <a href="shop.html">Huawei</a>
+                            <Link to="/products/40">Huawei</Link>
                         </li>
                         </ul>
                     </div>
