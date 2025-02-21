@@ -5,7 +5,7 @@ import './App.css'
 import ProductList from "./Pages/ProductList";
 import ProductDetails from "./Pages/ProductDetails";
 import Cart from "./Pages/Cart";
-import CheckoutForm from "./Pages/Checkout/CheckoutForm";
+// import CheckoutForm from "./Pages/Checkout/CheckoutForm";
 
 const router = createBrowserRouter([
     {
@@ -16,7 +16,7 @@ const router = createBrowserRouter([
             { path: "/products/:id", element: <ProductList/> },
             { path: "/productDetails/:id", element: <ProductDetails/> },
             { path: "/cart", element: <Cart/> },
-            { path: "/checkout", element: <CheckoutForm/> },
+            // { path: "/checkout", element: <CheckoutForm/> },
         ],
     },
 ]);
