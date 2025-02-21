@@ -1,25 +1,69 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+// Création d'un panier
 export const createCart = createAsyncThunk("cart/createCart", async () => {
     const response = await fetch("http://localhost:3000/carts", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ total: 0, subTotal: 0, tax: 0, items: [] }),
     });
-    if (!response.ok) throw new Error("Erreur lors de la création du cart");
+    if (!response.ok) throw new Error("Erreur lors de la création du panier");
     const result = await response.json();
     localStorage.setItem("cartId", result.id);
     return result.id;
 });
 
+// Récupérer les données du panier
 export const fetchCartData = createAsyncThunk("cart/fetchCartData", async (cartId) => {
     const response = await fetch(`http://localhost:3000/carts/${cartId}`);
-    if (!response.ok) throw new Error("Erreur lors du chargement du cart");
+    if (!response.ok) throw new Error("Erreur lors du chargement du panier");
     return await response.json();
 });
 
+// Mettre à jour la quantité d'un article
+export const updateItemQuantity = createAsyncThunk("cart/updateItemQuantity", async ({ cartId, itemId, qty }) => {
+    const response = await fetch(`http://localhost:3000/carts/${cartId}`);
+    if (!response.ok) throw new Error("Erreur lors de la récupération du panier");
+    const cart = await response.json();
+
+    const itemToUpdate = cart.items.find(item => item.id === itemId);
+    if (!itemToUpdate) throw new Error("Article non trouvé");
+
+    itemToUpdate.qty = qty;
+    cart.total = cart.items.reduce((total, item) => total + (item.price * (1 - item.discountRate / 100)) * item.qty, 0);
+    cart.subTotal = cart.total;
+
+    const updateResponse = await fetch(`http://localhost:3000/carts/${cartId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(cart),
+    });
+
+    if (!updateResponse.ok) throw new Error("Erreur mise à jour du panier");
+    return await updateResponse.json();
+});
+
+// 🔴 Supprimer un élément du panier (Backend + Redux)
+export const removeItemFromCart = createAsyncThunk("cart/removeItemFromCart", async ({ cartId, itemId }) => {
+    const response = await fetch(`http://localhost:3000/carts/${cartId}`);
+    if (!response.ok) throw new Error("Erreur récupération du panier");
+    const cart = await response.json();
+
+    cart.items = cart.items.filter(item => item.id !== itemId);
+    cart.total = cart.items.reduce((total, item) => total + (item.price * (1 - item.discountRate / 100)) * item.qty, 0);
+    cart.subTotal = cart.total;
+
+    const updateResponse = await fetch(`http://localhost:3000/carts/${cartId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(cart),
+    });
+
+    if (!updateResponse.ok) throw new Error("Erreur suppression article");
+    return await updateResponse.json();
+});
+
+// Slice Redux
 const cartSlice = createSlice({
     name: "cart",
     initialState: {
@@ -31,34 +75,18 @@ const cartSlice = createSlice({
     reducers: {
         addToCart: (state, action) => {
             state.cartData.items.push(action.payload);
-            state.cartData.total += (action.payload.price * (1-(action.payload.discountRate/100)) ) * action.payload.qty ;
-            state.cartData.subTotal  += (action.payload.price * (1-(action.payload.discountRate/100)) ) * action.payload.qty ;
-        },
-        removeFromCart: (state, action) => {
-            state.cartData.items = state.cartData.items.filter(item => item.id !== action.payload);
-            state.cartData.total -= (action.payload.price * (1-(action.payload.discountRate/100)) ) * action.payload.qty ;
-            state.cartData.subTotal  -= action.payload.price * action.payload.qty ;
-        },
+            state.cartData.total += (action.payload.price * (1 - action.payload.discountRate / 100)) * action.payload.qty;
+            state.cartData.subTotal = state.cartData.total;
+        }
     },
     extraReducers: (builder) => {
         builder
-            .addCase(createCart.fulfilled, (state, action) => {
-                state.cartId = action.payload;
-            })
-            .addCase(fetchCartData.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(fetchCartData.fulfilled, (state, action) => {
-                state.cartData = action.payload;
-                state.loading = false;
-            })
-            .addCase(fetchCartData.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.error.message;
-            });
-    }
+            .addCase(createCart.fulfilled, (state, action) => { state.cartId = action.payload; })
+            .addCase(fetchCartData.fulfilled, (state, action) => { state.cartData = action.payload; state.loading = false; })
+            .addCase(updateItemQuantity.fulfilled, (state, action) => { state.cartData = action.payload; })
+            .addCase(removeItemFromCart.fulfilled, (state, action) => { state.cartData = action.payload; });
+    },
 });
 
-export const { addToCart, removeFromCart } = cartSlice.actions;
+export const { addToCart } = cartSlice.actions;
 export default cartSlice.reducer;

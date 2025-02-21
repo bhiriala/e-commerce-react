@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import Navigation from "../Navigation/Navigation";
@@ -10,6 +10,7 @@ import { createCart, fetchCartData } from "../../Redux/cartSlice";
 function Layout() {
     const dispatch = useDispatch();
     const { cartId, cartData, loading, error } = useSelector((state) => state.cart);
+    const location = useLocation();
 
     console.log(cartData);
     useEffect(() => {
@@ -27,7 +28,7 @@ function Layout() {
     return (
         <div>
             <Header CartItemsNum={cartData?.items?.reduce((sum, item) => sum + item.qty, 0) || 0} total={cartData?.total || 0} />
-            <Navigation />
+           {location.pathname != "/cart" ? <Navigation  /> : <></>}
             <main style={{ minHeight: "80vh", padding: "20px" }}>
                 <Outlet />
             </main>
