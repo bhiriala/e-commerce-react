@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// Création d'un panier
 export const createCart = createAsyncThunk("cart/createCart", async () => {
     const response = await fetch("http://localhost:3000/carts", {
         method: "POST",
@@ -13,14 +12,12 @@ export const createCart = createAsyncThunk("cart/createCart", async () => {
     return result.id;
 });
 
-// Récupérer les données du panier
 export const fetchCartData = createAsyncThunk("cart/fetchCartData", async (cartId) => {
     const response = await fetch(`http://localhost:3000/carts/${cartId}`);
     if (!response.ok) throw new Error("Erreur lors du chargement du panier");
     return await response.json();
 });
 
-// Mettre à jour la quantité d'un article
 export const updateItemQuantity = createAsyncThunk("cart/updateItemQuantity", async ({ cartId, itemId, qty }) => {
     const response = await fetch(`http://localhost:3000/carts/${cartId}`);
     if (!response.ok) throw new Error("Erreur lors de la récupération du panier");
@@ -43,7 +40,6 @@ export const updateItemQuantity = createAsyncThunk("cart/updateItemQuantity", as
     return await updateResponse.json();
 });
 
-// 🔴 Supprimer un élément du panier (Backend + Redux)
 export const removeItemFromCart = createAsyncThunk("cart/removeItemFromCart", async ({ cartId, itemId }) => {
     const response = await fetch(`http://localhost:3000/carts/${cartId}`);
     if (!response.ok) throw new Error("Erreur récupération du panier");
@@ -63,7 +59,7 @@ export const removeItemFromCart = createAsyncThunk("cart/removeItemFromCart", as
     return await updateResponse.json();
 });
 
-// Slice Redux
+
 const cartSlice = createSlice({
     name: "cart",
     initialState: {

@@ -20,7 +20,6 @@ function Layout() {
             dispatch(fetchCartData(cartId));
         }
     }, [cartId]);
-    // [cartId, dispatch]
 
     if (loading) return <p>Chargement en cours...</p>;
     if (error) return <p>Erreur : {error}</p>;

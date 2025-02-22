@@ -7,18 +7,6 @@ import { useDispatch,useSelector } from "react-redux";
 function Cart () {
     const { cartId, cartData } = useSelector((state) => state.cart);
 
-    const handleAddToCart = () => {
-            const newItem = {
-                id: props.id,
-                name: props.name,
-                imageName: props.img,
-                price: props.price,
-                qty: 1,
-                discountRate:props.discount
-            };
-    
-            dispatch(addToCart(newItem));
-        };
         
 
         useEffect(() => {

@@ -21,7 +21,7 @@ function ProductList(props) {
                 }
 
                 const result = await response.json();
-
+                console.log(result);
                 const foundData = result.find(item => String(item.id) === String(id));
 
                 if (!foundData) {
@@ -56,8 +56,8 @@ function ProductList(props) {
                                 const i = prod.imageName.indexOf("-");
                                 const substring = i !== -1 ? prod.imageName.slice(0, i) : "";
                                 const imgName = `/src/assets/produts-img/${substring}/${prod.imageName}`;
-                                console.log(prod.price)
-                                console.log(listProd);
+                                // console.log(prod.price)
+                                // console.log(listProd);
 
                                 return (
                                     <ProductInList 
